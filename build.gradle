@@ -33,7 +33,7 @@ task generateMarkdown {
     doLast {
         file('build/prompts.md').withWriter { md ->
             md.println '# TIMIT\n'
-            file('build/prompts.txt').readLines().take(500).each { line ->
+            file('build/prompts.txt').eachLine { line ->
                 if (!line.startsWith(';')) {
                     md.println "## $line\n"
                 }
@@ -42,10 +42,10 @@ task generateMarkdown {
     }
 }
 
-task build(type: Exec) {
+task compileHtml(type: Exec) {
     dependsOn generateMarkdown, unpackRevealJS
     def htmlFile = file('build/prompts.html')
     outputs.files htmlFile
-    commandLine 'pandoc', '-t', 'revealjs', '--standalone', generateMarkdown.markdownFile, '-o', htmlFile
+    commandLine 'pandoc', '-t', 'revealjs', '--standalone', '--section-divs', generateMarkdown.markdownFile, '-o', htmlFile
     workingDir 'build'
 }
