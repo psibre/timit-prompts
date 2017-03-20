@@ -33,7 +33,7 @@ task generateMarkdown {
     doLast {
         file('build/prompts.md').withWriter { md ->
             md.println '# TIMIT'
-            file('build/prompts.txt').eachLine { line ->
+            file('build/prompts.txt').readLines().take(500).each { line ->
                 if (!line.startsWith(';')) {
                     md.println "## $line"
                 }
