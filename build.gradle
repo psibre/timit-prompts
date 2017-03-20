@@ -34,7 +34,9 @@ task generateMarkdown {
             md.println '# TIMIT\n'
             file('build/prompts.txt').readLines().take(500).each { line ->
                 if (!line.startsWith(';')) {
-                    md.println "## $line\n"
+                    def fields = line.tokenize()
+                    md.println "## ${fields.dropRight(1).join(' ')}\n"
+                    md.println "${fields.last()}\n"
                 }
             }
         }
