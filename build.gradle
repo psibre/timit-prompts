@@ -16,6 +16,11 @@ task downloadRevealJS(type: Download) {
     overwrite false
 }
 
+task downloadRevealJSPlugin(type: Download) {
+    src 'https://raw.githubusercontent.com/rajgoel/reveal.js-plugins/master/audio-slideshow/audio-slideshow.js'
+    dest 'build'
+}
+
 task unpackRevealJS(type: Copy) {
     dependsOn downloadRevealJS
     from zipTree('build/reveal.js.zip')
@@ -36,7 +41,7 @@ task generateMarkdown(type: Copy) {
         file('build/prompts.txt').readLines().take(500).each { line ->
             if (!line.startsWith(';')) {
                 def fields = line.tokenize()
-                markdownFile << "## ${fields.dropRight(1).join(' ')}\n\n"
+                markdownFile << "## ${fields.dropRight(1).join(' ')} {data-audio-src=\"beep.mp3\"}\n\n"
                 markdownFile << "${fields.last()}\n\n"
             }
         }
@@ -44,7 +49,7 @@ task generateMarkdown(type: Copy) {
 }
 
 task build(type: Exec) {
-    inputs.files generateMarkdown, unpackRevealJS
+    inputs.files generateMarkdown, unpackRevealJS, downloadRevealJSPlugin
     def htmlFile = file('build/prompts.html')
     outputs.files htmlFile
     commandLine 'pandoc', '-t', 'revealjs', '--standalone', generateMarkdown.markdownFile, '-o', htmlFile
