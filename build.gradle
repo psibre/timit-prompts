@@ -26,6 +26,22 @@ task unpackRevealJS(type: Copy) {
     }
 }
 
+task generateMarkdown {
+    dependsOn downloadPromptList
+    ext.markdownFile = file('build/prompts.md')
+    outputs.files markdownFile
+    doLast {
+        file('build/prompts.md').withWriter { md ->
+            md.println '# TIMIT'
+            file('build/prompts.txt').eachLine { line ->
+                if (!line.startsWith(';')) {
+                    md.println "## $line"
+                }
+            }
+        }
+    }
+}
+
 task compileHtml(type: Exec) {
     def markdownFile = file('prompts.md')
     commandLine 'pandoc', '-t', 'revealjs', '--standalone', markdownFile, '-o', 'prompts.html'
