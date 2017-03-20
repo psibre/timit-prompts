@@ -29,7 +29,7 @@ task generateMarkdown(type: Copy) {
     dependsOn downloadPromptList
     from 'src'
     into 'build'
-    include 'prompts.md'
+    include 'prompts.md', 'beep.mp3'
     ext.markdownFile = file('build/prompts.md')
     outputs.files markdownFile
     doLast {
