@@ -44,7 +44,7 @@ task generateMarkdown(type: Copy) {
 }
 
 task build(type: Exec) {
-    dependsOn generateMarkdown, unpackRevealJS
+    inputs.files generateMarkdown, unpackRevealJS
     def htmlFile = file('build/prompts.html')
     outputs.files htmlFile
     commandLine 'pandoc', '-t', 'revealjs', '--standalone', generateMarkdown.markdownFile, '-o', htmlFile
