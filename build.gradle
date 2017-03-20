@@ -32,10 +32,10 @@ task generateMarkdown {
     outputs.files markdownFile
     doLast {
         file('build/prompts.md').withWriter { md ->
-            md.println '# TIMIT'
+            md.println '# TIMIT\n'
             file('build/prompts.txt').readLines().take(500).each { line ->
                 if (!line.startsWith(';')) {
-                    md.println "## $line"
+                    md.println "## $line\n"
                 }
             }
         }
