@@ -36,8 +36,8 @@ task generateMarkdown(type: Copy) {
         file('build/prompts.txt').readLines().take(500).each { line ->
             if (!line.startsWith(';')) {
                 def fields = line.tokenize()
-                markdownFile << "## ${fields.dropRight(1).join(' ')}\n\n"
-                markdownFile << "<audio data-autoplay src='beep.mp3'></audio>\n\n"
+                markdownFile << "## ${fields.dropRight(1).join(' ')} {data-audio-src=\"beep.mp3\"}\n\n"
+                markdownFile << "<audio data-autoplay src='beep.mp3'></audio>\n\n"                
                 markdownFile << "${fields.last()}\n\n"
             }
         }
