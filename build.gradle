@@ -25,3 +25,9 @@ task unpackRevealJS(type: Copy) {
         it.path = it.path - '-3.4.1'
     }
 }
+
+task compileHtml(type: Exec) {
+    def markdownFile = file('prompts.md')
+    commandLine 'pandoc', '-t', 'revealjs', '--standalone', markdownFile, '-o', 'prompts.html'
+    workingDir 'build'
+}
