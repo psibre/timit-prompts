@@ -43,7 +43,9 @@ task generateMarkdown {
 }
 
 task compileHtml(type: Exec) {
-    def markdownFile = file('prompts.md')
-    commandLine 'pandoc', '-t', 'revealjs', '--standalone', markdownFile, '-o', 'prompts.html'
+    dependsOn generateMarkdown, unpackRevealJS
+    def htmlFile = file('build/prompts.html')
+    outputs.files htmlFile
+    commandLine 'pandoc', '-t', 'revealjs', '--standalone', generateMarkdown.markdownFile, '-o', htmlFile
     workingDir 'build'
 }
