@@ -42,7 +42,7 @@ task generateMarkdown {
     }
 }
 
-task compileHtml(type: Exec) {
+task build(type: Exec) {
     dependsOn generateMarkdown, unpackRevealJS
     def htmlFile = file('build/prompts.html')
     outputs.files htmlFile
