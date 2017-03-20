@@ -42,6 +42,7 @@ task generateMarkdown(type: Copy) {
             if (!line.startsWith(';')) {
                 def fields = line.tokenize()
                 markdownFile << "## ${fields.dropRight(1).join(' ')} {data-audio-src=\"beep.mp3\"}\n\n"
+                markdownFile << "<audio data-autoplay src='beep.mp3'></audio>\n\n"
                 markdownFile << "${fields.last()}\n\n"
             }
         }
