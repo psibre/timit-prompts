@@ -25,19 +25,19 @@ task unpackRevealJS(type: Copy) {
     }
 }
 
-task generateMarkdown {
+task generateMarkdown(type: Copy) {
     dependsOn downloadPromptList
+    from 'src'
+    into 'build'
+    include 'prompts.md'
     ext.markdownFile = file('build/prompts.md')
     outputs.files markdownFile
     doLast {
-        file('build/prompts.md').withWriter { md ->
-            md.println '# TIMIT\n'
-            file('build/prompts.txt').readLines().take(500).each { line ->
-                if (!line.startsWith(';')) {
-                    def fields = line.tokenize()
-                    md.println "## ${fields.dropRight(1).join(' ')}\n"
-                    md.println "${fields.last()}\n"
-                }
+        file('build/prompts.txt').readLines().take(500).each { line ->
+            if (!line.startsWith(';')) {
+                def fields = line.tokenize()
+                markdownFile << "## ${fields.dropRight(1).join(' ')}\n\n"
+                markdownFile << "${fields.last()}\n\n"
             }
         }
     }
